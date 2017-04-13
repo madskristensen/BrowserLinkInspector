@@ -4,7 +4,9 @@
         <Identity Id="bc4780ab-de6e-4999-bebf-51390e1b75ef" Version="0.5" Language="en-US" Publisher="Mads Kristensen" />
         <DisplayName>Browser Link Inspector 2017</DisplayName>
         <Description xml:space="preserve">Adds inspect and debug mode directly in the browsers</Description>
+        <MoreInfo>https://github.com/madskristensen/browserlinkinspector</MoreInfo>
         <License>Resources\LICENSE</License>
+        <ReleaseNotes>https://github.com/madskristensen/BrowserLinkInspector/blob/master/CHANGELOG.md</ReleaseNotes>
         <Icon>Resources\Icon.png</Icon>
         <PreviewImage>Resources\Icon.png</PreviewImage>
         <Tags>browser link</Tags>
