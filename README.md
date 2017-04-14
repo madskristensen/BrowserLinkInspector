@@ -15,6 +15,7 @@ See the [change log](CHANGELOG.md) for changes and road map.
 
 - Inspect mode `(Ctrl+Alt+I)`
 - Debug mode `(Ctrl+Alt+D)`
+- Supports the [Web Essentials Chrome extension](https://chrome.google.com/webstore/detail/web-essentials/mghdcdlpcdiodelbplncnodiiadljhhk)
 
 ### Inspect Mode
 This mode will put the browser in a state where hovering the various DOM elements in the Browser will open the corresponding file in Visual Studio and select the range that produced the DOM element.
