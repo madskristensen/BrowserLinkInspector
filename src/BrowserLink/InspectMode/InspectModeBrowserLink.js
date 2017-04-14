@@ -2,124 +2,124 @@
 /// <reference path="../_intellisense/jquery-1.8.2.js" />
 
 (function (browserLink, $) {
-    /// <param name="browserLink" value="bl" />
-    /// <param name="$" value="jQuery" />
+  /// <param name="browserLink" value="bl" />
+  /// <param name="$" value="jQuery" />
 
-    var inspectModeOn = false;
-    var inspectOverlay = null;
-    var current;
+  var inspectModeOn = false;
+  var inspectOverlay = null;
+  var current;
 
-    function getInspectOverlay() {
-        if (inspectOverlay === null) {
+  function getInspectOverlay() {
+    if (inspectOverlay === null) {
 
-            $("body").append("<div id=\"__browserLink_InspectOverlay\"></div");
-            $("body").append(
-                "<style>" +
-                    "#__browserLink_InspectOverlay {position:fixed; cursor: crosshair; box-sizing: border-box; top: 0; left: 0; bottom: 0; right: 0; background-color: #888; opacity: 0.2; overflow: visible; z-index: 9999999999; /*overrde*/ width: auto; height: auto; margin: 0; padding: 0; background-image: none; display:none}" +
-                    ".__browserLink_selected {outline: 3px solid lightblue;}" +
-                "</style>");
+      $("body").append("<div id=\"__browserLink_InspectOverlay\"></div");
+      $("body").append(
+        "<style>" +
+        "#__browserLink_InspectOverlay {position:fixed; cursor: crosshair; box-sizing: border-box; top: 0; left: 0; bottom: 0; right: 0; background-color: #888; opacity: 0.2; overflow: visible; z-index: 9999999999; /*overrde*/ width: auto; height: auto; margin: 0; padding: 0; background-image: none; display:none}" +
+        ".__browserLink_selected {outline: 3px solid lightblue;}" +
+        "</style>");
 
-            inspectOverlay = $("#__browserLink_InspectOverlay");
+      inspectOverlay = $("#__browserLink_InspectOverlay");
 
-            inspectOverlay.mousemove(function (args) {
-                inspectOverlay.css("height", "0");
+      inspectOverlay.mousemove(function (args) {
+        inspectOverlay.css("height", "0");
 
-                var target = document.elementFromPoint(args.clientX, args.clientY);
+        var target = document.elementFromPoint(args.clientX, args.clientY);
 
-                inspectOverlay.css("height", "auto");
+        inspectOverlay.css("height", "auto");
 
-                if (target) {
-                    while (target && !browserLink.sourceMapping.canMapToSource(target)) {
-                        target = target.parentElement;
-                    }
+        if (target) {
+          while (target && !browserLink.sourceMapping.canMapToSource(target)) {
+            target = target.parentElement;
+          }
 
-                    if (target) {
-                        if (current && current !== target) {
-                            $(current).removeClass("__browserLink_selected");
-                        }
+          if (target) {
+            if (current && current !== target) {
+              $(current).removeClass("__browserLink_selected");
+            }
 
-                        current = target;
-                        $(target).addClass("__browserLink_selected");
-                        browserLink.sourceMapping.selectCompleteRange(target);
-                    }
-                }
-            });
-
-            inspectOverlay.click(function () {
-                turnOffInspectMode();
-
-                browserLink.invoke("BringVisualStudioToFront");
-            });
+            current = target;
+            $(target).addClass("__browserLink_selected");
+            browserLink.sourceMapping.selectCompleteRange(target);
+          }
         }
+      });
 
-        return inspectOverlay;
+      inspectOverlay.click(function () {
+        turnOffInspectMode();
+
+        browserLink.invoke("BringVisualStudioToFront");
+      });
     }
 
-    function turnOnInspectMode() {
-        if (!inspectModeOn) {
-            inspectModeOn = true;
+    return inspectOverlay;
+  }
 
-            browserLink.invoke("SetInspectMode");
-            getInspectOverlay().show();
-        }
+  function turnOnInspectMode() {
+    if (!inspectModeOn) {
+      inspectModeOn = true;
+
+      browserLink.invoke("SetInspectMode");
+      getInspectOverlay().show();
     }
+  }
 
-    function turnOffInspectMode() {
-        if (inspectModeOn) {
-            inspectModeOn = false;
+  function turnOffInspectMode() {
+    if (inspectModeOn) {
+      inspectModeOn = false;
 
-            getInspectOverlay().hide();
-            browserLink.invoke("DisableInspectMode");
+      getInspectOverlay().hide();
+      browserLink.invoke("DisableInspectMode");
 
-            if (current)
-                $(current).removeClass("__browserLink_selected");
-        }
+      if (current)
+        $(current).removeClass("__browserLink_selected");
     }
+  }
 
-    $(document).keyup(function (e) {
-        if (e.keyCode === 73 && e.ctrlKey && e.altKey) { // 73 = i
-            turnOnInspectMode();
+  $(document).keyup(function (e) {
+    if (e.keyCode === 73 && e.ctrlKey && e.altKey) { // 73 = i
+      turnOnInspectMode();
+    }
+    else if (e.which === 27) { // ESC
+      turnOffInspectMode();
+    }
+  });
+
+  window.__weSetInspectMode = turnOnInspectMode;
+
+  return {
+
+    setInspectMode: function (inspectModeOn) {
+      if (inspectModeOn) {
+        turnOnInspectMode();
+      }
+      else {
+        turnOffInspectMode();
+      }
+    },
+
+    enableInspectMode: function () {
+      turnOnInspectMode();
+    },
+
+    select: function (sourcePath, position) {
+      var target = browserLink.sourceMapping.getElementAtPosition(sourcePath, position);
+
+      if (target) {
+        if (current && current !== target) {
+          $(current).removeClass("__browserLink_selected");
         }
-        else if (e.which === 27) { // ESC
-            turnOffInspectMode();
-        }
-    });
 
-    window.__weSetInspectMode = turnOnInspectMode;
+        current = target;
+        $(target).addClass("__browserLink_selected");
+        if (current.scrollIntoView)
+          current.scrollIntoView();
+      }
+    },
 
-    return {
-
-        setInspectMode: function (inspectModeOn) {
-            if (inspectModeOn) {
-                turnOnInspectMode();
-            }
-            else {
-                turnOffInspectMode();
-            }
-        },
-
-        enableInspectMode: function(){
-            turnOnInspectMode();
-        },
-
-        select: function (sourcePath, position) {
-            var target = browserLink.sourceMapping.getElementAtPosition(sourcePath, position);
-
-            if (target) {
-                if (current && current !== target) {
-                    $(current).removeClass("__browserLink_selected");
-                }
-
-                current = target;
-                $(target).addClass("__browserLink_selected");
-                if (current.scrollIntoView)
-                    current.scrollIntoView();
-            }
-        },
-
-        menu: {
-            displayText: 'Inspect Mode',
-            'Inspect Mode (Ctrl+Alt+I)': 'enableInspectMode'
-        }
-    };
+    menu: {
+      displayText: 'Browser Link Inspector',
+      'Inspect Mode (Ctrl+Alt+I)': 'enableInspectMode'
+    }
+  };
 });
