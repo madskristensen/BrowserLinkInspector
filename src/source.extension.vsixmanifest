@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="bc4780ab-de6e-4999-bebf-51390e1b75ef" Version="0.5" Language="en-US" Publisher="Mads Kristensen" />
-        <DisplayName>Browser Link Inspector 2017</DisplayName>
+        <Identity Id="9b651fbe-f7a1-43ff-b7ec-288709f2cb26" Version="0.5" Language="en-US" Publisher="Mads Kristensen" />
+        <DisplayName>Browser Link Inspector 2019</DisplayName>
         <Description xml:space="preserve">Adds inspect and debug mode directly in the browsers</Description>
         <MoreInfo>https://github.com/madskristensen/browserlinkinspector</MoreInfo>
         <License>Resources\LICENSE</License>
@@ -12,10 +12,10 @@
         <Tags>browser link</Tags>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0,17.0)" />
     </Installation>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />

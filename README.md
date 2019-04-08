@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ix60r69heymrn69f?svg=true)](https://ci.appveyor.com/project/madskristensen/browserlinkinspector)
 
 Download this extension from the [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BrowserLinkInspector2017)
-or get the [CI build](http://vsixgallery.com/extension/bc4780ab-de6e-4999-bebf-51390e1b75ef/).
+or get the [CI build](http://vsixgallery.com/extension/9b651fbe-f7a1-43ff-b7ec-288709f2cb26/).
 
 ---------------------------------------
 

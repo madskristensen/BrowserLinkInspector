@@ -26,8 +26,7 @@ namespace BrowserLinkInspector
         {
             var textManager = (IVsTextManager)ServiceProvider.GlobalProvider.GetService(typeof(SVsTextManager));
 
-            IVsTextView activeView = null;
-            ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out activeView));
+            ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out IVsTextView activeView));
             return activeView;
         }
 
@@ -35,6 +34,5 @@ namespace BrowserLinkInspector
         {
             return (IComponentModel)ServiceProvider.GlobalProvider.GetService(typeof(SComponentModel));
         }
-
     }
 }

@@ -55,47 +55,44 @@ namespace BrowserLinkInspector
         {
             VsHelpers.DTE.ItemOperations.OpenFile(file);
 
-            Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
-            {
-                var view = VsHelpers.GetCurentTextView();
-                var html = HtmlEditorDocument.TryFromTextView(view);
+            _ = Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() =>
+              {
+                  var view = VsHelpers.GetCurentTextView();
+                  var html = HtmlEditorDocument.TryFromTextView(view);
 
-                if (html == null)
-                    return;
+                  if (html == null)
+                      return;
 
-                ElementNode element;
-                AttributeNode attribute;
+                  view.Selection.Clear();
+                  html.HtmlEditorTree.GetPositionElement(position + 1, out ElementNode element, out AttributeNode attribute);
 
-                view.Selection.Clear();
-                html.HtmlEditorTree.GetPositionElement(position + 1, out element, out attribute);
+                  // HTML element
+                  if (element != null && element.Start == position)
+                  {
+                      Span span = new Span(element.InnerRange.Start, element.InnerRange.Length);
+                      string text = html.TextBuffer.CurrentSnapshot.GetText(span);
 
-                // HTML element
-                if (element != null && element.Start == position)
-                {
-                    Span span = new Span(element.InnerRange.Start, element.InnerRange.Length);
-                    string text = html.TextBuffer.CurrentSnapshot.GetText(span);
+                      if (text != innerHtml)
+                      {
+                          UpdateBuffer(innerHtml, html, span);
+                      }
+                  }
+                  // ActionLink
+                  else if (element.Start != position)
+                  {
+                      //@Html.ActionLink("Application name", "Index", "Home", null, new { @class = "brand" })
+                      Span span = new Span(position, 100);
 
-                    if (text != innerHtml)
-                    {
-                        UpdateBuffer(innerHtml, html, span);
-                    }
-                }
-                // ActionLink
-                else if (element.Start != position)
-                {
-                    //@Html.ActionLink("Application name", "Index", "Home", null, new { @class = "brand" })
-                    Span span = new Span(position, 100);
+                      if (position + 100 < html.TextBuffer.CurrentSnapshot.Length)
+                      {
+                          string text = html.TextBuffer.CurrentSnapshot.GetText(span);
+                          var result = Regex.Replace(text, @"^html.actionlink\(""([^""]+)""", "Html.ActionLink(\"" + innerHtml + "\"", RegexOptions.IgnoreCase);
 
-                    if (position + 100 < html.TextBuffer.CurrentSnapshot.Length)
-                    {
-                        string text = html.TextBuffer.CurrentSnapshot.GetText(span);
-                        var result = Regex.Replace(text, @"^html.actionlink\(""([^""]+)""", "Html.ActionLink(\"" + innerHtml + "\"", RegexOptions.IgnoreCase);
+                          UpdateBuffer(result, html, span);
+                      }
+                  }
 
-                        UpdateBuffer(result, html, span);
-                    }
-                }
-
-            }), DispatcherPriority.ApplicationIdle, null);
+              }), DispatcherPriority.ApplicationIdle, null);
         }
 
         private static void UpdateBuffer(string innerHTML, HtmlEditorDocument html, Span span)

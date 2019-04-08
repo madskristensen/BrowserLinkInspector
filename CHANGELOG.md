@@ -4,7 +4,7 @@
 
 Features that have a checkmark are complete and available for
 download in the
-[CI build](http://vsixgallery.com/extension/bc4780ab-de6e-4999-bebf-51390e1b75ef/).
+[CI build](http://vsixgallery.com/extension/9b651fbe-f7a1-43ff-b7ec-288709f2cb26/).
 
 # Change log
 
