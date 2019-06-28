@@ -1,4 +1,4 @@
-# Browser Link Inspector 2017
+# Browser Link Inspector 2019
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ix60r69heymrn69f?svg=true)](https://ci.appveyor.com/project/madskristensen/browserlinkinspector)
 
